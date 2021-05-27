@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript">
+    function addBook(){
+      //取得文字欄位值
+      var book= document.getElementById("book");
+      
+      // 用輸入欄位的文字建立文字節點
+      var txtNode = document.createTextNode('asdad');
+      
+      // 建立新的 li 元素節點
+      var li = document.createElement("li");
+      // 將文字節點加入成為 li 元素的子節點
+      li.appendChild(txtNode);
+      
+      // 取得 id="list" 的清單元素節點
+      var list = document.getElementById("list");
+      // 將 li 元素節點加入成為清單元素的子節點
+      list.appendChild(li);
+      
+      // 將目前清單子元素的總數顯示在網頁上
+      document.getElementById("bookCount").innerText = 
+        list.children.length;
+    }
+
+
+    </script>
+</head>
+<p>
+    書名：<input id="book" type="text">
+    <button onclick="addBook()">新增</button>
+  </p>
+  <p>現在有<span id="bookCount">0</span>本書<p>
+  <ul id="list"></ul>
+</body>
+</html>
