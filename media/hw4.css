@@ -1,0 +1,47 @@
+div.ex1 {
+  width: auto;
+  height: 600px;
+}
+div.ex2 {
+  width: auto;
+  height: 150px;
+  background-color: blue;
+  color: white;
+  font-size: 30px;
+  text-align: center;
+}
+div.ex3 {
+  width: 20%;
+  height: 400px;
+  background-color: orange;
+  float: left;
+  font-size: 30px;
+  text-align: center;
+}
+div.ex4 {
+  width: 60%;
+  height: 400px;
+  background-color: black;
+  color: white;
+  float: left;
+  font-size: 30px;
+  text-align: center;
+}
+div.ex5 {
+  width: 20%;
+  height: 400px;
+  background-color: red;
+  color: yellow;
+  float: left;
+  font-size: 30px;
+  text-align: center;
+}
+div.ex6 {
+  width: auto;
+  height: 150px;
+  color: white;
+  background-color: blue;
+  clear: both;
+  font-size: 30px;
+  text-align: center;
+}
