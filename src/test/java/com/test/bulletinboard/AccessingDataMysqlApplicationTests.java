@@ -1,13 +1,12 @@
-package com.example.serving_web_content;
+package com.test.bulletinboard;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ServingWebContentApplicationTests {
-
-	@Test
+public class AccessingDataMysqlApplicationTests {
+    @Test
 	void contextLoads() {
 	}
-
 }
+

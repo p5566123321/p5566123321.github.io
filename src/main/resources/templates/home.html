@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+    <title>公佈欄</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- style -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container-xxl my-3">
+      <div class="mb-3">
+        <p id="no-data" class="text-danger visually-hidden fw-bold">無資料</p>
+      </div>
+
+      <div class="mb-3 dropdown">
+        <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+          </svg>
+          <strong th:text="${userID}"></strong>
+        </a>
+        <ul class="dropdown-menu text-small shadow">
+          <li><a class="dropdown-item" href="/">Sign out</a></li>
+        </ul>
+      </div>
+
+      <div class="mb-3 row">
+        <div class="dropdown col">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            每頁資料數
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" th:href="@{'/home'(page=0, size=5, userID=${userID})}">5</a></li>
+            <li><a class="dropdown-item" th:href="@{'/home'(page=0, size=10, userID=${userID})}">10</a></li>
+            <li><a class="dropdown-item" th:href="@{'/home'(page=0, size=20, userID=${userID})}">20</a></li>
+          </ul>
+        </div>
+        <div class="text-end col">
+          <a class="btn btn-outline-primary" th:href="@{'/home/add'(userID=${userID})}">新增</a>
+        </div>
+      </div>
+
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>標題</th>
+            <th>發布日期</th>
+            <th>截止日期</th>
+            <th>修改</th>
+            <th>刪除</th>
+          </tr>
+        </thead>
+        <tbody id="messages" th:each="message : ${messages}">
+            <tr>
+                <td >
+                  <a th:href="@{/home/view(id=${message.id})}" th:text="${message.title}" class="link-opacity-100"></a>
+                </td>
+                <td th:text="${message.publicDate}"></td>
+                <td th:text="${message.expirationDate}"></td>
+                <td>
+                  <a th:href="@{/home/edit(id=${message.id})}" class="btn btn-primary btn-sm">修改</a>
+                </td>
+                <td><button class="btn btn-danger btn-sm" onclick="deleteMessage(this.dataset.id)" th:data-id="${message.id}">刪除</button></td>
+
+
+            </tr>
+        </tbody>
+      </table>
+
+      <nav class="mx-3">
+        <ul class="pagination">
+            <!-- 上一頁 -->
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link" th:href="@{'/home'(page=${currentPage - 1}, size=${size}, userID=${userID})}">上一頁</a>
+            </li>
+    
+            <!-- 頁碼 -->
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:classappend="${i == currentPage} ? 'active'">
+                <a class="page-link" th:href="@{'/home'(page=${i}, size=${size}, userID=${userID})}" th:text="${i + 1}"></a>
+            </li>
+    
+            <!-- 下一頁 -->
+            <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+                <a class="page-link" th:href="@{'/home'(page=${currentPage + 1}, size=${size}, userID=${userID})}">下一頁</a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+
+      
+    <!-- script -->  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        var messages = document.querySelectorAll('#messages');
+        //console.log(messages.length);
+        if(messages.length <= 0){
+            console.log(messages.length);
+            document.getElementById('no-data').classList.remove('visually-hidden');
+        }
+        function deleteMessage(id){
+          //console.log(id);
+          const request = new Request("board/delete/"+ id, {
+            method: "POST",
+          });
+          
+          fetch(request)
+          .then((response) => {
+            if (response.status === 200) {
+              //return response.json();
+              location.reload();
+            } else {
+              throw new Error("Something went wrong on API server!");
+            }
+          })
+          .then((response) => {
+            console.debug(response);
+            // …
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+          
+        }      
+    </script>
+</body>
+</html>
